@@ -148,6 +148,9 @@ const SignupPage = () => {
       <AuthImagePattern
         title="Join our community"
         subtitle="Connect with friends, share moments, and stay in touch with your loved ones."
+        hue={0.6}
+        hoverIntensity={0.5}
+        rotateOnHover={true}
       />
     </div>
   );

@@ -1,6 +1,6 @@
 import Message from "../models/message.model.js";
 import User from "../models/user.model.js";
-
+import cloudinary from "../lib/cloudinary.js";
 
 
 
@@ -23,7 +23,7 @@ export const getMessages = async(req,res)=>{
         const messages=await Message.find({
             $or:[
                 {senderId:myId, receiverId:userTochatId},
-                {senderid:userTochatId,receiverId:myId} 
+                {senderId:userTochatId,receiverId:myId} 
             ]
         })
         res.status(200).json(messages);

@@ -1,29 +1,65 @@
-import { useEffect } from "react";
+import { useEffect , useState } from "react";
 import { useChatStore } from "../store/useChatStore";
 import SidebarSkeleton from "./Skeletons/SidebarSkeleton";
 import { Users } from "lucide-react";
 import { useAuthStore } from "../store/useAuthStore";
+import { Radio } from 'lucide-react'; 
 
 
 const Sidebar = () => {
     const { getUsers, users, selectedUser, setSelectedUser, isUsersLoading } = useChatStore();
     const { onlineUsers } = useAuthStore();
+    const [showOnlineOnly, setShowOnlineOnly] = useState(false);
 
     useEffect(() => {
         getUsers();
     }, [getUsers]);
 
+
+    const filteredUsers = showOnlineOnly ? users.filter(user => onlineUsers.includes(user._id)) : users;
+
+
     if(isUsersLoading) return <SidebarSkeleton/>;
   return (
     <aside className="h-full w-20 lg:w-72 border-r border-base-300 flex flex-col transition-all duration-200">
         <div className="border-b border-base-300 w-full p-4">
-        <div className="flex items-center gap-2">
-          <Users className="size-6" />
-          <span className="font-semibold hidden lg:block text-xl pl-1">Contacts</span>
-        </div>
+          <div className="flex items-center gap-2">
+            <Users className="size-6" />
+            <span className="font-semibold hidden lg:block text-xl pl-1">Contacts</span>
+          </div>
+          {/* online users */}
+          <div className="mt-5 flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 text-xs overflow-hidden">
+
+                {/* Mobile view: icon-only toggle */}
+                <label className="sm:hidden cursor-pointer flex items-center gap-1">
+                  <input
+                    type="checkbox"
+                    checked={showOnlineOnly}
+                    onChange={(e) => setShowOnlineOnly(e.target.checked)}
+                    className="hidden" // hide native checkbox but keep functionality
+                  />
+                  <Radio
+                    size={16}
+                    className={`text-green-400 ${showOnlineOnly ? 'opacity-100' : 'opacity-60'}`}
+                  />
+                  <span className="text-white-500">({onlineUsers.length - 1})</span>
+                </label>
+
+                {/* Desktop view: checkbox with label and full count */}
+                <label className="hidden sm:flex cursor-pointer items-center gap-2 whitespace-nowrap">
+                  <input
+                    type="checkbox"
+                    checked={showOnlineOnly}
+                    onChange={(e) => setShowOnlineOnly(e.target.checked)}
+                    className="checkbox checkbox-xs"
+                  />
+                  <span className="text-xs">Show online only</span>
+                  <span className="text-white-500">({onlineUsers.length - 1} online)</span>
+                </label>
+                </div>
         </div>
         <div className="overflow-y-auto w-full py-3">
-        {users.map((user) => (
+        {filteredUsers.map((user) => (
           <button
             key={user._id}
             onClick={() => setSelectedUser(user)}

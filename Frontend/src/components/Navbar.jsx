@@ -14,18 +14,18 @@ const Navbar = () => {
         <div className="flex items-center justify-between h-full">
           <div className="flex items-center gap-8">
             <Link to="/" className="flex items-center gap-2.5 hover:opacity-80 transition-all">
-              <div className="size-9 rounded-lg bg-primary/10 flex items-center justify-center">
+              <div className="size-9 rounded-lg bg-gray-700 flex items-center justify-center">
                 <MessageSquare className="w-5 h-5 text-primary" />
               </div>
               <h1 className="text-lg font-bold">Chatty</h1>
             </Link>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-3">
             <Link
               to={"/settings"}
               className={`
-              btn btn-sm gap-2 transition-colors
+              btn btn-sm gap-2 transition-colors rounded-lg
               
               `}
             >
@@ -35,7 +35,7 @@ const Navbar = () => {
 
             {authUser && (
               <>
-                <Link to={"/profile"} className={`btn btn-sm gap-2`}>
+                <Link to={"/profile"} className={`btn btn-sm gap-2 rounded-lg`}>
                   <User className="size-5" />
                   <span className="hidden sm:inline">Profile</span>
                 </Link>

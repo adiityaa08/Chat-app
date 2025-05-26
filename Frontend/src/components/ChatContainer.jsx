@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import { useChatStore } from '../store/useChatStore';
 import { useEffect } from 'react';
 import ChatHeader from './ChatHeader';
@@ -8,12 +8,24 @@ import { useAuthStore } from '../store/useAuthStore';
 import { formatMessageTime } from "../lib/utlis";
 
 const ChatContainer = () => {
-  const {messages,getMessages,isMessagesLoading,selectedUser}=useChatStore();
+  const {messages,getMessages,isMessagesLoading,selectedUser,subscribeToMessages,unsubscribeFromMessages}=useChatStore();
   const { authUser } = useAuthStore();
+  const messageEndRef=useRef(null);
+
+
   useEffect(()=>{
     getMessages(selectedUser._id);
-  },[selectedUser._id,getMessages]);
 
+    subscribeToMessages();
+
+    return () => unsubscribeFromMessages();
+  },[selectedUser._id,getMessages, subscribeToMessages, unsubscribeFromMessages]);
+
+  useEffect(()=>{
+    if(messageEndRef.current && messages) {
+      messageEndRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  },[messages]);
    
   if (isMessagesLoading) {
     return (
@@ -34,10 +46,11 @@ const ChatContainer = () => {
           <div
             key={message._id}
             className={`chat ${String(message.senderId) === String(authUser._id) ? "chat-end" : "chat-start"}`}
+            ref={messageEndRef}
           >
             
             <div className=" chat-image avatar">
-              <div className="size-10 rounded-full border">
+              <div className="size-8 rounded-full border border-white/35">
                 <img
                   src={
                     message.senderId === authUser._id
@@ -53,7 +66,7 @@ const ChatContainer = () => {
                 {formatMessageTime(message.createdAt)}
               </time>
             </div>
-            <div className="chat-bubble flex flex-col">
+            <div className="chat-bubble flex flex-col rounded-xl">
               {message.image && (
                 <img
                   src={message.image}
@@ -61,7 +74,7 @@ const ChatContainer = () => {
                   className="sm:max-w-[200px] rounded-md mb-2"
                 />
               )}
-              {message.text && <p>{message.text}</p>}
+              {message.text && <p className='text-sm font-thin'>{message.text}</p>}
             </div>
           </div>
         ))}

@@ -8,10 +8,10 @@ const NoChatSelected = () => {
         <div className="flex justify-center gap-4 mb-1">
           <div className="relative">
             <div
-              className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center
+              className="w-14 h-14 rounded-xl bg-gray-700 flex items-center
              justify-center animate-bounce"
             >
-              <MessageSquare className="w-12 h-12 text-primary " />
+              <MessageSquare className="w-10 h-10 text-primary " />
             </div>
           </div>
         </div>

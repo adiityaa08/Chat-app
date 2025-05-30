@@ -22,6 +22,9 @@ export default {
           },
         },
       },
+      fontSize: {
+        base: '1rem',
+      },
     },
   },
   plugins: [daisyui], // ⬅ DaisyUI plugin included

@@ -19,10 +19,12 @@ const ChatHeader = () => {
 
           {/* User info */}
           <div>
-            <h3 className="font-thin pl-1">{selectedUser.fullName}</h3>
-            <p className="text-xs text-base-content/70 pl-1">
-              {onlineUsers.includes(selectedUser._id) ? "Online" : "Offline"}
-            </p>
+          <h3 className="font-thin pl-1">{selectedUser.fullName}</h3>
+            {selectedUser.fullName !== "Gemini AI" && (
+              <p className="text-xs text-base-content/70 pl-1">
+                {onlineUsers.includes(selectedUser._id) ? "Online" : "Offline"}
+              </p>
+            )}
           </div>
         </div>
 

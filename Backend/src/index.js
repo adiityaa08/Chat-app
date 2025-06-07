@@ -7,6 +7,7 @@ import {connectDB} from './lib/db.js';
 import authRoutes from './routes/auth.route.js';
 import messageRoutes from './routes/message.route.js';
 import { app, server } from './lib/socket.js';
+import aiRoutes from './routes/ai.route.js';
 
 dotenv.config();
 
@@ -26,7 +27,7 @@ app.use(cors({
 
 app.use("/api/auth",authRoutes)
 app.use("/api/messages",messageRoutes);
-
+app.use("/api/help", aiRoutes);
 
 server.listen(PORT,()=>{
     console.log("Server is running on PORT:" + PORT);

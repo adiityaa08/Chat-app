@@ -27,6 +27,36 @@ const Sidebar = () => {
             <Users className="size-6" />
             <span className="font-semibold hidden lg:block text-xl pl-1">Contacts</span>
           </div>
+
+          
+          <button
+          onClick={() =>
+            setSelectedUser({
+              _id: "ai-assistant",
+              fullName: "Gemini AI",
+              profilePic: "/ai.jpeg",
+            })
+          }
+          className={`w-full p-3 pl-0 flex items-center gap-3 hover:bg-base-300 transition-colors ${
+            selectedUser?._id === "ai-assistant"
+              ? "bg-base-300 ring-1 ring-base-300"
+              : ""
+          }`}
+        >
+          <div className="relative">
+            <img
+              src="/ai.jpeg"
+              alt="Gemini"
+              className="size-8 object-cover rounded-full"
+            />
+          </div>
+          <div className="hidden lg:block text-left min-w-0">
+            <div className="font-bold truncate">Gemini AI</div>
+            <div className="text-sm text-zinc-400">AI Assistant</div>
+          </div>
+        </button>
+        
+
           {/* online users */}
           <div className="mt-5 flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 text-xs overflow-hidden">
 

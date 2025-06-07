@@ -26,6 +26,10 @@ export const useChatStore = create((set,get) => ({
     getMessages: async (userId) => {
         set({ isMessagesLoading: true });
         try {
+          if (userId === 'ai-assistant') {
+            set({ messages: [] });
+            return;
+          }
           const res = await axiosInstance.get(`/messages/${userId}`);
           set({ messages: res.data });
         } catch (error) {
@@ -33,17 +37,42 @@ export const useChatStore = create((set,get) => ({
         } finally {
           set({ isMessagesLoading: false });
         }
-      },
+    },
 
     sendMessage: async (messageData) => {
         const { selectedUser, messages } = get();
         try {
-          const res = await axiosInstance.post(`/messages/send/${selectedUser._id}`, messageData);
-          set({ messages: [...messages, res.data] });
+          if (selectedUser._id === 'ai-assistant') {
+            const userMessage = {
+              _id: Date.now().toString(),
+              text: messageData.text,
+              senderId: 'me',
+              createdAt: new Date().toISOString(),
+            };
+            set({ messages: [...messages, userMessage] });
+    
+            const res = await axiosInstance.post('/help/ask', {
+              prompt: messageData.text,
+            });
+    
+            const aiMessage = {
+              _id: Date.now().toString() + '-ai',
+              text: res.data.response,
+              senderId: 'ai-assistant',
+              createdAt: new Date().toISOString(),
+            };
+            set({ messages: [...get().messages, aiMessage] });
+          } else {
+            const res = await axiosInstance.post(
+              `/messages/send/${selectedUser._id}`,
+              messageData
+            );
+            set({ messages: [...messages, res.data] });
+          }
         } catch (error) {
           toast.error(error.response.data.message);
         }
-      },
+    },
 
 
     setSelectedUser: (user) => {

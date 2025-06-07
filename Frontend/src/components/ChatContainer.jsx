@@ -6,6 +6,8 @@ import MessageInput from './MessageInput';
 import MessageSkeleton from './Skeletons/MessageSkeleton';
 import { useAuthStore } from '../store/useAuthStore';
 import { formatMessageTime } from "../lib/utlis";
+import ReactMarkdown from "react-markdown";
+
 
 const ChatContainer = () => {
   const {messages,getMessages,isMessagesLoading,selectedUser,subscribeToMessages,unsubscribeFromMessages}=useChatStore();
@@ -45,7 +47,11 @@ const ChatContainer = () => {
         {messages.map((message) => (
           <div
             key={message._id}
-            className={`chat ${String(message.senderId) === String(authUser._id) ? "chat-end" : "chat-start"}`}
+            className={`chat ${
+              message.senderId === 'me' || message.senderId === authUser._id
+                ? 'chat-end'
+                : 'chat-start'
+            }`}
             ref={messageEndRef}
           >
             

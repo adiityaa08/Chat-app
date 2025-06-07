@@ -3,7 +3,7 @@ import { Routes ,Route, Navigate } from 'react-router-dom';
 
 import Navbar from './components/Navbar.jsx'
 import Homepage from './pages/Homepage.jsx';
-import SignupPage from './pages/SignupPage.jsx';
+import SignupPage from './pages/SignUpPage.jsx';
 import SettingsPage from './pages/SettingsPage.jsx';
 import LoginPage from './pages/LoginPage.jsx';
 import ProfilePage from './pages/ProfilePage.jsx';

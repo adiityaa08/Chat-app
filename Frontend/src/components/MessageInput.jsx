@@ -1,47 +1,36 @@
-import React, { useState , useRef } from 'react'
+import React, { useState, useRef } from 'react';
 import { useChatStore } from '../store/useChatStore';
 import { Image, Send, X } from "lucide-react";
 import toast from "react-hot-toast";
-
+import EmojiPickerButton from './Emojipicker';
 
 const MessageInput = () => {
-  const [text,setText]=useState("");
-  const [imagePreview,setImagePreview]=useState(null);
+  const [text, setText] = useState("");
+  const [imagePreview, setImagePreview] = useState(null);
   const fileInputRef = useRef(null);
-  const {sendMessage}=useChatStore()
+  const { sendMessage } = useChatStore();
 
-
-  const handleImageChange=(e)=>{
+  const handleImageChange = (e) => {
     const file = e.target.files[0];
-    if (!file.type.startsWith("image/")) {
+    if (!file?.type.startsWith("image/")) {
       toast.error("Please select an image file");
       return;
     }
-
     const reader = new FileReader();
-    reader.onloadend = () => {
-      setImagePreview(reader.result);
-    };
-    reader.readAsDataURL(file)
+    reader.onloadend = () => setImagePreview(reader.result);
+    reader.readAsDataURL(file);
   };
 
-  const removeImage=()=>{
+  const removeImage = () => {
     setImagePreview(null);
     if (fileInputRef.current) fileInputRef.current.value = "";
   };
 
-
-  const handleSendMessage=async(e)=>{
+  const handleSendMessage = async (e) => {
     e.preventDefault();
     if (!text.trim() && !imagePreview) return;
-
     try {
-      await sendMessage({
-        text: text.trim(),
-        image: imagePreview,
-      });
-
-      // Clear form
+      await sendMessage({ text: text.trim(), image: imagePreview });
       setText("");
       setImagePreview(null);
       if (fileInputRef.current) fileInputRef.current.value = "";
@@ -49,6 +38,11 @@ const MessageInput = () => {
       console.error("Failed to send message:", error);
     }
   };
+
+  const handleEmojiClick = (emojiObject) => {
+    setText((prev) => prev + emojiObject.emoji);
+  };
+
   return (
     <div className="p-4 w-full">
       {imagePreview && (
@@ -61,8 +55,7 @@ const MessageInput = () => {
             />
             <button
               onClick={removeImage}
-              className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-base-300
-              flex items-center justify-center"
+              className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-base-300 flex items-center justify-center"
               type="button"
             >
               <X className="size-3" />
@@ -72,7 +65,8 @@ const MessageInput = () => {
       )}
 
       <form onSubmit={handleSendMessage} className="flex items-center gap-2">
-        <div className="flex-1 flex gap-2">
+        <div className="flex-1 flex gap-1 items-center">
+          <EmojiPickerButton onEmojiClick={handleEmojiClick} />
           <input
             type="text"
             className="w-full input input-bordered rounded-2xl input-sm sm:input-md"
@@ -87,29 +81,29 @@ const MessageInput = () => {
             ref={fileInputRef}
             onChange={handleImageChange}
           />
-
           <button
             type="button"
-            className={`btn btn-circle w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center"
-                     ${imagePreview ? "text-emerald-500" : "text-zinc-400"}`}
+            className={`btn btn-circle w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center ${
+              imagePreview ? "text-emerald-500" : "text-zinc-400"
+            }`}
             onClick={() => fileInputRef.current?.click()}
           >
             <Image size={21} />
           </button>
         </div>
-        <div className='bg-green-500 rounded-lg hover:cursor-pointer'>
-        <button
-          type="submit"
-          className="btn btn-sm btn-circle text-white"
-          disabled={!text.trim() && !imagePreview}
-        >
-          
-          <Send size={20} />
-        </button>
+
+        <div className="bg-green-500 rounded-lg hover:cursor-pointer">
+          <button
+            type="submit"
+            className="btn btn-sm btn-circle text-white"
+            disabled={!text.trim() && !imagePreview}
+          >
+            <Send size={20} />
+          </button>
         </div>
       </form>
     </div>
-  )
-}
+  );
+};
 
-export default MessageInput
+export default MessageInput;

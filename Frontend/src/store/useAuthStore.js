@@ -3,7 +3,7 @@ import { axiosInstance } from '../lib/axios.js';
 import { toast } from 'react-hot-toast';
 import { io } from "socket.io-client";
 
-const BASE_URL=import.meta.env.MODE === "development"?"http://localhost:3000":"https://nex-chat-frontend.onrender.com"; // Update with your backend URL
+// const BASE_URL=import.meta.env.MODE === "development"?"http://localhost:3000":"https://nex-chat-frontend.onrender.com"; // Update with your backend URL
 export const useAuthStore = create((set,get)=>({
     authUser: null,
     isSigningUp: false,
@@ -46,6 +46,7 @@ export const useAuthStore = create((set,get)=>({
       set({ isLoggingIn: true });
         try {
           const res = await axiosInstance.post("/auth/login", data);
+          console.log("respone in login:", res.data);
           set({ authUser: res.data });
           toast.success("Logged in successfully");
 

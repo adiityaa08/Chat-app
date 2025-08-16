@@ -1,6 +1,11 @@
 import axios from "axios";
 
+const BASE_URL =
+  import.meta.env.MODE === "development"
+    ? "http://localhost:3000/api"   // local
+    : "https://nex-chat.onrender.com/api"; // prod
+
 export const axiosInstance = axios.create({
-    baseURL:import.meta.env.MODE === "production" ? "https://nex-chat.onrender.com/api" : "http://localhost:3000/api",
-    withCredentials:true,
+  baseURL: BASE_URL,
+  withCredentials: true, // ✅ ensures cookies (JWT) are sent
 });

@@ -21,18 +21,19 @@ app.set("trust proxy", 1);
 app.use(express.json({ limit: "10mb" }));
 app.use(cookieParser());
 
-// ✅ Fix CORS: allow both dev + prod frontend, with credentials
 app.use(
   cors({
     origin: [
-      "http://localhost:5173", // dev
-      "https://nex-chat-frontend.onrender.com", // prod
+      "http://localhost:5173",               // local dev
+      "https://nex-chat-frontend.onrender.com", // production frontend
     ],
-    credentials: true,
+    credentials: true, // allow cookies + Authorization headers
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
+    exposedHeaders: ["set-cookie"], // 👈 ensures Set-Cookie is visible to browser
   })
 );
+
 
 // Routes
 app.use("/api/auth", authRoutes);

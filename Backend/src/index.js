@@ -41,13 +41,13 @@ app.use("/api/messages", messageRoutes);
 app.use("/api/help", aiRoutes);
 
 // Serve frontend in production
-if (process.env.NODE_ENV === "production") {
-  app.use(express.static(path.join(__dirname, "../Frontend/dist")));
+// if (process.env.NODE_ENV === "production") {
+//   app.use(express.static(path.join(__dirname, "../Frontend/dist")));
 
-  app.get("*", (req, res) => {
-    res.sendFile(path.join(__dirname, "../Frontend", "dist", "index.html"));
-  });
-}
+//   app.get("*", (req, res) => {
+//     res.sendFile(path.join(__dirname, "../Frontend", "dist", "index.html"));
+//   });
+// }
 
 // Start server
 server.listen(PORT, () => {

@@ -6,11 +6,12 @@ export const generateToken = (userId, res) => {
   });
 
   res.cookie("token", token, {
-    httpOnly: true,      // prevent access via JS
-    secure: process.env.NODE_ENV === "production", // only over HTTPS
-    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax", 
-    maxAge: 1000 * 60 * 60 * 24 * 7, // 1 day
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "lax",   // ✅ "lax" works perfectly for same-domain
+    maxAge: 1000 * 60 * 60 * 24 * 7,
   });
+  
 
   return token;
 };

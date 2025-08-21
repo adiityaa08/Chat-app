@@ -14,35 +14,38 @@ dotenv.config();
 const __dirname = path.resolve();
 const PORT = process.env.PORT || 3000;
 
-// Trust proxy (important for cookies on Render/Heroku/Netlify)
+// Trust proxy (important for cookies on Render/Heroku)
 app.set("trust proxy", 1);
 
 // Middleware
 app.use(express.json({ limit: "10mb" }));
 app.use(cookieParser());
 
+// ✅ CORS setup
 app.use(
   cors({
-    origin: "https://nex-chat-frontend.onrender.com",
+    origin:
+      process.env.NODE_ENV === "production"
+        ? "https://nex-chat.onrender.com" // same domain in prod
+        : "http://localhost:5173",        // Vite dev server
     credentials: true,
   })
 );
-
-
 
 // Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/messages", messageRoutes);
 app.use("/api/help", aiRoutes);
 
-// Serve frontend in production
-// if (process.env.NODE_ENV === "production") {
-//   app.use(express.static(path.join(__dirname, "../Frontend/dist")));
+// ✅ Serve frontend in production
+if (process.env.NODE_ENV === "production") {
+  const frontendPath = path.join(__dirname, "./Frontend/dist");
+  app.use(express.static(frontendPath));
 
-//   app.get("*", (req, res) => {
-//     res.sendFile(path.join(__dirname, "../Frontend", "dist", "index.html"));
-//   });
-// }
+  app.get("*", (req, res) => {
+    res.sendFile(path.join(frontendPath, "index.html"));
+  });
+}
 
 // Start server
 server.listen(PORT, () => {

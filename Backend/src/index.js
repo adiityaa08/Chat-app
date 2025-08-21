@@ -24,15 +24,15 @@ app.use(cookieParser());
 app.use(
   cors({
     origin: [
-      "http://localhost:5173",               // local dev
-      "https://nex-chat-frontend.onrender.com", // production frontend
+      "http://localhost:5173",
+      "https://nex-chat-frontend.onrender.com",
     ],
-    credentials: true, // allow cookies + Authorization headers
+    credentials: true,
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
-    exposedHeaders: ["set-cookie"], // 👈 ensures Set-Cookie is visible to browser
   })
 );
+
 
 
 // Routes

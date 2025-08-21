@@ -9,7 +9,7 @@ export const generateToken = (userId, res) => {
     httpOnly: true,      // prevent access via JS
     secure: process.env.NODE_ENV === "production", // only over HTTPS
     sameSite: process.env.NODE_ENV === "production" ? "none" : "lax", 
-    maxAge: 1000 * 60 * 60 * 24, // 1 day
+    maxAge: 1000 * 60 * 60 * 24 * 7, // 1 day
   });
 
   return token;

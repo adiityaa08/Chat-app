@@ -26,7 +26,7 @@ app.use(
   cors({
     origin:
       process.env.NODE_ENV === "production"
-        ? "https://nex-chat.onrender.com" // same domain in prod
+        ? "https://nex-chat-y6mq.onrender.com" // same domain in prod
         : "http://localhost:5173",        // Vite dev server
     credentials: true,
   })

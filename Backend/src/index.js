@@ -25,8 +25,6 @@ app.use(
   cors({
     origin: "https://nex-chat-frontend.onrender.com",
     credentials: true,
-    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
 
